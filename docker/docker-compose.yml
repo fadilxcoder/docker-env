@@ -18,8 +18,8 @@ services:
       - ./nginx/sites/:/etc/nginx/sites-available
       - ./nginx/conf.d/:/etc/nginx/conf.d
     ports:
-      - "8080:80"
-      - "8085:443"
+      - "8881:80"
+      - "8882:443"
     depends_on:
       - php-fpm
 
