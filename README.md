@@ -5,3 +5,9 @@
 - Connect to App Terminal : `docker exec -it fx_php_fpm ash`
 - Verify if container is UP : `docker ps`
 - URL : `http://localhost:8881/`
+
+# Symfony
+
+- Changes made in `docker/nginx/sites/default.conf` - line `root /var/www/html/public/;`
+- DB GUI : `adminer.php` - in folder **some-configs** - copy file to folder **public** after dowloading symfony
+- Credentials to login & DB connection : `src/some-configs/.env`
