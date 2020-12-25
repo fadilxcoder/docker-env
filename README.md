@@ -1,3 +1,5 @@
+# NGINX / PHP-FPM / ADMINER
+
 - PHP Extension installer : https://github.com/mlocati/docker-php-extension-installer
 - To verify if extension is present, use command : `php -m|grep mysql` for example
 - BUILD : `docker-compose up --build`
