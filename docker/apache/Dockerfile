@@ -1,9 +1,23 @@
-FROM httpd:2.4.33-alpine
+FROM webdevops/apache:ubuntu-18.04
 
-RUN apk update; \
-    apk upgrade;
+# LABEL maintainer="Eric Pfeiffer <computerfr33k@users.noreply.github.com>"
 
-# Copy apache vhost file to proxy php requests to php-fpm container
-COPY apache.conf /usr/local/apache2/conf/apache.conf
-RUN echo "Include /usr/local/apache2/conf/apache.conf" \
-    >> /usr/local/apache2/conf/httpd.conf
+ARG PHP_UPSTREAM_CONTAINER=php-fpm
+ARG PHP_UPSTREAM_PORT=9000
+ARG PHP_UPSTREAM_TIMEOUT=60
+ARG DOCUMENT_ROOT=/var/www/html/
+
+ENV WEB_PHP_SOCKET=${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}
+
+ENV WEB_DOCUMENT_ROOT=${DOCUMENT_ROOT}
+
+ENV WEB_PHP_TIMEOUT=${PHP_UPSTREAM_TIMEOUT}
+
+EXPOSE 80 443
+
+WORKDIR /var/www/html/
+
+RUN mkdir -p /var/run/apache2/
+ENTRYPOINT ["/opt/docker/bin/entrypoint.sh"]
+
+CMD ["supervisord"]

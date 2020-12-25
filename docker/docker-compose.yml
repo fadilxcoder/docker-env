@@ -29,7 +29,7 @@ services:
   apache2:
     container_name: fx_apache_2
     build:
-      context: './apache/'
+      context: ./apache
     volumes:
       - ../www:/var/www/html
     ports:
@@ -39,6 +39,7 @@ services:
       - php-fpm
 
   phpmyadmin:
+    container_name: fx_pma
     image: phpmyadmin/phpmyadmin:latest
     ports:
       - 8000:80
