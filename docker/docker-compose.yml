@@ -1,27 +1,6 @@
 version: '3'
 
 services:
-  php-fpm:
-    container_name: fx_php_fpm
-    build:
-      context: ./php-fpm
-    volumes:
-      - ../src:/var/www/html
-
-  nginx:
-    container_name: fx_nginx
-    build:
-      context: ./nginx
-    volumes:
-      - ../src:/var/www/html
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/sites/:/etc/nginx/sites-available
-      - ./nginx/conf.d/:/etc/nginx/conf.d
-    ports:
-      - "8881:80"
-      - "8882:443"
-    depends_on:
-      - php-fpm
 
   database:
     container_name: fx_database
@@ -32,5 +11,42 @@ services:
       - MYSQL_USER=myuser
       - MYSQL_PASSWORD=secret
       - MYSQL_ROOT_PASSWORD=docker
+    ports:
+      - "3306:3306"
     volumes:
       - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
+      - ./database/data:/var/lib/mysql
+
+  php-fpm:
+    container_name: fx_php_fpm
+    build:
+      context: ./php-fpm
+    depends_on:
+      - database
+    volumes:
+      - ../www:/var/www/html
+
+  apache2:
+    container_name: fx_apache_2
+    build:
+      context: './apache/'
+    volumes:
+      - ../www:/var/www/html
+    ports:
+      - "8881:80"
+      - "8882:443"
+    depends_on:
+      - php-fpm
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8000:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=database
+    depends_on:
+      - database
+    
+
+  

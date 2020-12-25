@@ -1,4 +1,4 @@
-# NGINX / PHP-FPM / ADMINER
+# APACHE / PHP-FPM / PHPMYADMIN
 
 - PHP Extension installer : https://github.com/mlocati/docker-php-extension-installer
 - To verify if extension is present, use command : `php -m|grep mysql` for example
